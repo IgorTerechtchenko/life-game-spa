@@ -369,6 +369,7 @@ var router = new _router2.default({
     match: 'about',
     onEnter: function onEnter() {
       game.pauseGame();
+      display.changePPButton('||');
       about.render();
     },
     onLeave: function onLeave() {

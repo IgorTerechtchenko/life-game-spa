@@ -267,6 +267,8 @@ var contentEl = document.querySelector('#content');
 var menuWrapper = document.querySelector('#menuWrapper');
 var eventBus = new _event_bus2.default();
 var display = new _display_component2.default(contentEl, eventBus, 'text');
+var about = new _render_about2.default(contentEl);
+window.location.hash = 'about';
 var field = [];
 for (var i = 0; i < 10; i++) {
   field[i] = ['_', '*', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'];
@@ -366,10 +368,11 @@ var router = new _router2.default({
     match: 'about',
     onEnter: function onEnter() {
       game.pauseGame();
-      (0, _render_about2.default)(contentEl);
+      about.render();
     },
     onLeave: function onLeave() {
-      contentEl.querySelector('.aboutWrapper').innerHTML = '';
+      document.querySelector('.aboutWrapper').innerHTML = '';
+      console.log('leave');
     }
   }]
 });
@@ -515,9 +518,15 @@ Menu.prototype = {
     this.element.appendChild(this.menuEl);
   },
   addListener: function addListener() {
+    var _this = this;
+
     this.menuEl.addEventListener('click', function (e) {
       if (e.target.tagName.toLowerCase() === 'button') {
-        var newHash = e.target.getAttribute('class').split(':')[1];
+        _this.menuEl.querySelectorAll('button').forEach(function (button) {
+          return button.classList.remove('current');
+        });
+        e.target.classList.add('current');
+        var newHash = e.target.getAttribute('class').split(':')[1].split(' ')[0];
         window.location.hash = newHash;
       }
     });
@@ -530,19 +539,25 @@ Menu.prototype = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = renderAbout;
-function renderAbout(el) {
-  var aboutWrapper = document.createElement('div');
-  var p = document.createElement('p1');
-  aboutWrapper.className = 'aboutWrapper';
-  p.innerHTML = 'life game SPA by Igor Terechtchenko, 2018';
-  aboutWrapper.appendChild(p);
-  var divs = el.querySelectorAll('div');
+exports.default = AboutPage;
+function AboutPage(el) {
+  this.el = el;
+  this.aboutWrapper = document.createElement('div');
+  this.aboutWrapper.className = 'aboutWrapper';
+  this.el.appendChild(this.aboutWrapper);
+}
+
+AboutPage.prototype.render = function () {
+  this.clearElements();
+  this.aboutWrapper.innerHTML = '<ul>\n                                  <li>Conway\'s  Game of Life SPA by Igor Terechtchenko, 2018</li>\n                                  <li> <a href=https://en.wikipedia.org/wiki/Conway\'s_Game_of_Life>Background and rules</a></li>\n                                  <li> <a href=https://github.com/IgorTerechtchenko/js--base-course/tree/08/08/ht/IgorTerechtchenko> App\'s github page </li>\n                                  </ul>';
+};
+
+AboutPage.prototype.clearElements = function () {
+  var divs = this.el.querySelectorAll('div');
   divs.forEach(function (div) {
     div.innerHTML = '';
   });
-  el.appendChild(aboutWrapper);
-}
+};
 
 },{}],7:[function(require,module,exports){
 'use strict';

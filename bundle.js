@@ -174,6 +174,7 @@ DisplayComponent.prototype.addHistory = function () {
   input.setAttribute('type', 'range');
   input.setAttribute('min', 0);
   input.setAttribute('max', this.bus.maxHistory);
+  input.className = 'range';
   this.historyWrapper.appendChild(input);
   input.addEventListener('input', function () {
     _this3.bus.trigger('historyChange', input.value);

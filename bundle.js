@@ -163,7 +163,9 @@ DisplayComponent.prototype.addControls = function () {
 
 DisplayComponent.prototype.changePPButton = function (text) {
   var PPButton = this.controlsWrapper.querySelector('.PPButton');
-  PPButton.innerHTML = text;
+  if (PPButton) {
+    PPButton.innerHTML = text;
+  }
 };
 
 DisplayComponent.prototype.addHistory = function () {
@@ -269,7 +271,6 @@ var menuWrapper = document.querySelector('#menuWrapper');
 var eventBus = new _event_bus2.default();
 var display = new _display_component2.default(contentEl, eventBus, 'text');
 var about = new _render_about2.default(contentEl);
-window.location.hash = 'about';
 var field = [];
 for (var i = 0; i < 10; i++) {
   field[i] = ['_', '*', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'];
@@ -371,10 +372,10 @@ var router = new _router2.default({
       game.pauseGame();
       display.changePPButton('||');
       about.render();
+      console.log('about');
     },
     onLeave: function onLeave() {
       document.querySelector('.aboutWrapper').innerHTML = '';
-      console.log('leave');
     }
   }]
 });
@@ -382,6 +383,7 @@ var router = new _router2.default({
 var menu = new _menu2.default(menuWrapper, eventBus, { text: 'Text', canvas: 'Canvas', svg: 'SVG', about: 'about' });
 menu.render();
 menu.addListener();
+window.location.hash = 'about';
 
 },{"./display_component.js":1,"./event_bus.js":2,"./life_game.js":4,"./menu.js":5,"./render_about.js":6,"./router.js":7}],4:[function(require,module,exports){
 'use strict';
